@@ -49,7 +49,6 @@ Module.register("MMM-Parcel", {
 	
 
     getDom: function() {
-		this.sendSocketNotification('JUST_SAYING',"GETDOM started, " + this.loaded);
         var wrapper = document.createElement("table");
         wrapper.className = "small";
         wrapper.style.maxWidth = this.config.maxWidth;
@@ -104,6 +103,7 @@ Module.register("MMM-Parcel", {
 			extraWrapperHeaderLine.className = "ParcelInfo";
 			var parcelName = (("title" in p) && p.title != null)?p.title:p.tracking_number;
 			var thisParcelIcon = this.makeParcelIconWrapper(parcelIcons[parcelStatus.indexOf(p.tag)], parcelIconColor[parcelStatus.indexOf(p.tag)])
+			var lastLoc;
 			
 				// icon 
 				parcelWrapperheaderline.appendChild(thisParcelIcon);
@@ -111,14 +111,22 @@ Module.register("MMM-Parcel", {
 				// parcelname, and possibly status & courier slug
 				var headerwrapper = document.createElement("td");
 				headerwrapper.colSpan = (isCompact)?"2":"3";
-				headerwrapper.style.whiteSpace = "nowrap";
+				headerwrapper.className = "no-wrap" ;
 				headerwrapper.innerHTML = parcelName + " (" + parcelStatustext[parcelStatus.indexOf(p.tag)] + 
 					((this.config.showCourier)?(
 						((parcelStatustext[parcelStatus.indexOf(p.tag)] != "")?", ":"") + p.slug):
 						"") + 
 					")" ;
+					
 				parcelWrapperheaderline.appendChild(headerwrapper);
 				
+				if (( p.tag === "Delivered") &&  
+				   ((p.expected_delivery == null) || p.expected_delivery === "") && 
+				   ( (p.checkpoints != undefined) && p.checkpoints.length != 0)) {
+						lastLoc = p.checkpoints[p.checkpoints.length-1];
+						p.expected_delivery = lastLoc.checkpoint_time ;
+				};
+
 				// expected delivery time with inconspicuous formatting depending on options. 
 				// empty text if date and time not known. Only days if date known and time unknown. 
 				var deliverywrapper = document.createElement("td");
@@ -126,9 +134,11 @@ Module.register("MMM-Parcel", {
 				if ( (p.expected_delivery != null) && p.expected_delivery != "") {
 					if (!isCompact) {
 						if (p.expected_delivery.includes("T")) {
-							deliverywrapper.innerHTML = this.config.expectedDeliveryText + moment(p.expected_delivery).calendar();
+							deliverywrapper.innerHTML = ((p.tag === "Delivered")?"":this.config.expectedDeliveryText) + 
+							  moment(p.expected_delivery).calendar();
 						} else {
-							deliverywrapper.innerHTML = this.config.expectedDeliveryText + moment(p.expected_delivery).calendar(null,this.config.onlyDaysFormat);
+ 							deliverywrapper.innerHTML = ((p.tag === "Delivered")?"":this.config.expectedDeliveryText) + 
+							  moment(p.expected_delivery).calendar(null,this.config.onlyDaysFormat);
 						}
 					} else {
 						var startofDay = moment().startOf("day") ;
@@ -154,9 +164,10 @@ Module.register("MMM-Parcel", {
 			if (isCompact) {
 				deliverywrapper.align = "right" ;
 				deliverywrapper.className = "ParcelTimeCompact" ;
+				deliverywrapper.style.whiteSpace = "nowrap";
 				parcelWrapperheaderline.appendChild(deliverywrapper);
 				wrapper.appendChild(parcelWrapperheaderline);
-				headerwrapper.innerHTML = (headerwrapper.innerHTML.length > 40)?(headerwrapper.innerHTML.slice(0,36)+ "... "):headerwrapper.innerHTML;
+				headerwrapper.style.maxWidth = "calc("+ this.config.maxWidth + " - 110px)"
 			} else {
 				wrapper.appendChild(parcelWrapperheaderline);
 				if ((p.expected_delivery != null) && p.expected_delivery != "") {
@@ -175,7 +186,7 @@ Module.register("MMM-Parcel", {
 			if (((p.checkpoints) != undefined) && p.checkpoints.length != 0) { 
 				var parcelWrapperinfoline = document.createElement("tr") ;
 				parcelWrapperinfoline.className = "ParcelInfo"; 
-				var lastLoc = p.checkpoints[p.checkpoints.length-1];
+				lastLoc = p.checkpoints[p.checkpoints.length-1];
 				// empty icon for indent
 				parcelWrapperinfoline.appendChild(this.makeParcelIconWrapper("fa-fw"));
 				// location icon 
