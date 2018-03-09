@@ -9,8 +9,8 @@ Inspired by MMM-AfterShip by Mykle1.
 
 ## Examples
 
-YES! <b>Functional release V1.0 available now!</b>
-Please start using and send me your comments! 
+<b>Functional release V1.0 available now!</b>
+Please start using. Don't hesitate to send comments.  
 
 
 Example with expected deliveries on a separate line. Expected delivery line is only shown when an ETA is known. 
@@ -151,10 +151,11 @@ The following properties can be configured:
 			     as the parcel header (see pictures for example). <br>
 				<br><b>Possible values:</b> <code>-1</code>, <code>0</code>, <code>1</code> or <code>2</code>
 				<br><b>Default value:</b> <code>-1</code>
-				<br><b>Note:</b> <code>0</code> displays the shipment with expected delivery time (if known) on an separate line, 
-				as well as a separate info line (if present).
+				<br><b>Note:</b> <code>0</code> displays the shipment with expected delivery time (if present) on a separate line.
+				it also displays a separate info line on the latest checkpoint (if present).
 				<code>1</code> shows a more compact version and <code>2</code> effectively makes it a one-liner per shipment. 
-				<code>-1</code> (=automatic)takes a compactness depending on the # parcels shown (<code>0</code> when <=3, <code>1</code> when <=6, <code>2</code> in case of longer lists
+				<code>-1</code> (=automatic) takes a compactness depending on the #parcels shown 
+				   (<code>0</code> when <=3, <code>1</code> when <=6, <code>2</code> in case of long lists). 
 			</td>
 		</tr>
 		<tr>
