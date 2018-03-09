@@ -55,7 +55,7 @@ config: {
 	showCourier: true,
 	autoHide: false, // not functional yet in this version
 	isSorted: true,  // sort on delivery Status (most important ones first)
-	compactness: 0, // 0 = elaborate, 1 = compact display, 2 = very compact, one-liner per shipment
+	compactness: -1, // 0 = elaborate, 1 = compact display, 2 = very compact, one-liner per shipment, -1 = automatic
 	hideExpired: false,
 	updateInterval: 600000, // 10 minutes = 10 * 60 * 1000 milliseconds. 
 	parcelStatusText: ["Exception", "Failed Attempt","In Delivery", "In Transit", 
@@ -149,11 +149,12 @@ The following properties can be configured:
 			<td><code>compactness</code></td>
 			<td>Determines whether the expected delivery time (if known for the parcel) is shown on a separate line or on the same line 
 			     as the parcel header (see pictures for example). <br>
-				<br><b>Possible values:</b> <code>0</code>, <code>1</code> or <code>2</code>
-				<br><b>Default value:</b> <code>0</code>
+				<br><b>Possible values:</b> <code>-1</code>, <code>0</code>, <code>1</code> or <code>2</code>
+				<br><b>Default value:</b> <code>-1</code>
 				<br><b>Note:</b> <code>0</code> displays the shipment with expected delivery time (if known) on an separate line, 
 				as well as a separate info line (if present).
 				<code>1</code> shows a more compact version and <code>2</code> effectively makes it a one-liner per shipment. 
+				<code>-1</code> (=automatic)takes a compactness depending on the # parcels shown (<code>0</code> when <=3, <code>1</code> when <=6, <code>2</code> in case of longer lists
 			</td>
 		</tr>
 		<tr>

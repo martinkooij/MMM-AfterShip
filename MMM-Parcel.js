@@ -17,7 +17,7 @@ Module.register("MMM-Parcel", {
 		showCourier: true,
 		autoHide: false, // not functional yet.
 		isSorted: true,
-		compactness: 0, // 0 = elaborate, 1 = compact, 2 = very compact
+		compactness: -1, // 0 = elaborate, 1 = compact, 2 = very compact, -1 = automatic
 		hideExpired: false,
         updateInterval: 600000, // 10 minutes
 		parcelStatusText: ["Exception", "Failed Attempt","In Delivery", "In Transit", "Info Received","Pending", "Delivered", "Expired"],
@@ -57,8 +57,6 @@ Module.register("MMM-Parcel", {
 		                     "fa fa-file-text-o fa-fw", "fa fa-clock-o fa-fw", "fa fa-check-square-o fa-fw", "fa fa-history fa-fw"];
 		const parcelStatustext = this.config.parcelStatusText ;
 		const parcelIconColor = this.config.parcelIconColor;
-		const isCompact = this.config.compactness == 1 || this.config.compactness == 2
-		const isveryCompact = this.config.compactness == 2;
 
 
         if (!this.loaded) {
@@ -84,6 +82,13 @@ Module.register("MMM-Parcel", {
             return wrapper;			
 		};
 		
+		var isCompact = this.config.compactness == 1 || this.config.compactness == 2;
+		var isveryCompact = this.config.compactness == 2;
+		if (this.config.compactness == -1) {
+			isCompact = (Math.min(l.length,this.config.maxNumber) > 3) ;
+			isveryCompact = (Math.min(l.length,this.config.maxNumber) > 6) ;
+		}
+
 		
 		if (this.config.isSorted) {
 			l = l.sort(function(a,b){return parcelStatus.indexOf(a.tag) - parcelStatus.indexOf(b.tag);});
