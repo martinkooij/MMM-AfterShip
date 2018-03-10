@@ -37,7 +37,6 @@ module.exports = NodeHelper.create({
             this.startUpdateNext() ;
 		} else if (notification === 'INTERVAL_SET') {
 			mmparcelUpdateInterval = (payload<30000)?30000:payload;
-			console.log(notification, " <== ", payload, "; ", mmparcelUpdateInterval) ;
         } else {
 			console.log("OOPS. ", notification, payload) ;
 		}
