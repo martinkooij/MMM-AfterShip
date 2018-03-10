@@ -9,10 +9,6 @@ Inspired by MMM-AfterShip by Mykle1.
 
 ## Examples
 
-<b>Functional release V1.0 available now!</b>
-Please start using. Don't hesitate to send comments.  
-
-
 Example with expected deliveries on a separate line. Expected delivery line is only shown when an ETA is known. 
 
 ![](pictures/1.png)
@@ -240,6 +236,10 @@ The following properties can be configured:
 - [aftership] (installed via `npm install aftership`)
 - [moment] (already available)
 - font-awesome 4.7.0 (already available)
+
+## Newest features
+- autoHide implemented
+- compactness option of -1 added for auto-adjusting display depending on number of parcels shown. 
 
 ## Known issues
 - autoHide does not work yet. 
