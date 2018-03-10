@@ -15,7 +15,7 @@ Module.register("MMM-Parcel", {
 		animationSpeed: 2500,
 		maxNumber: 10,
 		showCourier: true,
-		autoHide: false, // not functional yet.
+		autoHide: false, //do not autoHide is the default
 		isSorted: true,
 		compactness: -1, // 0 = elaborate, 1 = compact, 2 = very compact, -1 = automatic
 		hideExpired: false,
@@ -41,12 +41,20 @@ Module.register("MMM-Parcel", {
 
     start: function() {
         Log.info("Starting module: " + this.name);
-        this.sendSocketNotification('CONFIG', this.config);
 		this.aftershipResults = {trackings:[]}; 
 		this.loaded = false ;
-		this.sendSocketNotification('AFTERSHIP_REQUEST', this.config.updateInterval); 	
+        this.sendSocketNotification('CONFIG', this.config);
+		this.sendSocketNotification("INTERVAL_SET", this.config.updateInterval) ;
+		this.sendSocketNotification('AFTERSHIP_FETCHER'); 	
     },
 	
+	suspend : function() {
+		this.sendSocketNotification("INTERVAL_SET", Math.max(900000,this.config.updateInterval*2)) ;
+	},
+	
+	resume: function() {
+		this.sendSocketNotification("INTERVAL_SET", this.config.updateInterval) ;
+	},
 
     getDom: function() {
         var wrapper = document.createElement("table");
@@ -68,19 +76,30 @@ Module.register("MMM-Parcel", {
 		var parcelList = this.aftershipResults.trackings;
 		this.sendSocketNotification("PARCELLISTLENGTH:", parcelList.length) ;
 
-		//remove expired deliveries if hideExpired is true;
+		//remove expired/delivered deliveries if hideExpired / hideDelivered is true;
 		var l = [];
 		for (var i = 0; i < parcelList.length; i++) {
-				if (!(parcelList[i].tag == "Expired" && hideExpired)) {
+				if (!(this.config.hideDelivered && parcelList[i].tag == "Delivered") && !(this.config.hideExpired && parcelList[i].tag == "Expired" )) {
 					l.push(parcelList[i]);
 				}
 			};
-		
+			
+			
+		this.sendSocketNotification("AUTOHIDE:", this.config.autoHide.toString() + ", " + this.name + ", " + JSON.stringify(this.lockStrings)) ;				
 		if (l.length == 0) {
+			if (this.config.autoHide && (this.lockStrings.indexOf(this.name) == -1)) {
+			  this.hide(0,{lockString: this.name});
+			};
 			wrapper.innerHTML = "No Data" ;
             wrapper.classList.add("light", "small");
             return wrapper;			
 		};
+		
+		if (this.config.autoHide && this.hidden) {
+			  this.sendSocketNotification("INTERVALSET", this.config.updateInterval) ;
+			  this.show(0,{lockString: this.name});
+		};	
+		
 		
 		var isCompact = this.config.compactness == 1 || this.config.compactness == 2;
 		var isveryCompact = this.config.compactness == 2;

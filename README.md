@@ -53,10 +53,11 @@ config: {
 	apiKey: 'Your API KEY goes here', // Your free API Key from aftership.com
 	maxNumber: 10, //maximum number of Parcels to show
 	showCourier: true,
-	autoHide: false, // not functional yet in this version
+	autoHide: false, // hide module on mirror when there are no deliveries to be shown
 	isSorted: true,  // sort on delivery Status (most important ones first)
 	compactness: -1, // 0 = elaborate, 1 = compact display, 2 = very compact, one-liner per shipment, -1 = automatic
-	hideExpired: false,
+	hideExpired: true, // don't show expired parcels
+	hideDelivered: false, // determines whether to show delivered parcels. Not recommended to hide. 
 	updateInterval: 600000, // 10 minutes = 10 * 60 * 1000 milliseconds. 
 	parcelStatusText: ["Exception", "Failed Attempt","In Delivery", "In Transit", 
 	                   "Info Received", "Pending", "Delivered", "Expired"], // This is the default. Enter your own language text
@@ -69,13 +70,13 @@ config: {
 	  nextWeek : 'dddd',
 	  sameElse : 'L'
 	  }, // formatting when only days are shown and time is unknown. 
-	expectedDeliveryText: 'Delivery Expected: '	 // This is the default. Change infoline text if you want 
+	expectedDeliveryText: 'Delivery Expected: '	 // This is the default. Changes time infoline. 
 	}
 }
 ````
 
 The above example is a bit long. If you are OK with English texts and you do like the default colors and settings 
-provided by the module a simple config suffices!
+provided by the module the following simple config suffices!
 
 ````javascript
 {
@@ -83,7 +84,7 @@ module: 'MMM-Parcel',
 position: 'top_right',	// This can be any of the regions. Best results in left or right regions.
 header: 'My Parcels',   // This is optional
 config: {
-	apiKey: 'Your API KEY goes here', // Your free API Key from aftership.com
+	apiKey: 'Your API KEY goes here' // Your free API Key from aftership.com
 	}
 }
 ````
@@ -131,7 +132,8 @@ The following properties can be configured:
 			<td>The module hides itself when there are no parcels found<br>
 				<br><b>Possible values:</b> <code>true</code>, <code>false</code> 
 				<br><b>Default value:</b> <code>false</code>
-				<br><b>Note:</b> Not yet implemented. Option has no effect at this moment
+				<br><b>Note:</b> Hide module from the mirror when there are no Parcels to be shown. Also reduces the update interval 
+				to minimally every 15 minutes or else 2 times the configured <code>updateInterval</code> whichever one is the longest.  
 			</td>
 		</tr>
 				<tr>
@@ -163,6 +165,16 @@ The following properties can be configured:
 			<td>Determines whether parcels with status "Expired" should be shown.<br>
 				<br><b>Possible values:</b> <code>true</code>, <code>false</code> 
 				<br><b>Default value:</b> <code>true</code>
+	
+			</td>
+		</tr>
+		<tr>
+			<td><code>hideDelivered</code></td>
+			<td>Determines whether parcels with status "Delivered" should be shown.<br>
+				<br><b>Possible values:</b> <code>true</code>, <code>false</code> 
+				<br><b>Default value:</b> <code>false</code>
+				<br><b>Note:</b> <em>Not recommended for use</em>. Sometimes the infoline shows important info where, when and how the delivery was. 
+				You don't want to forget your parcel if it has been delivered at the neighbors ;). 
 			</td>
 		</tr>
 		<tr>
