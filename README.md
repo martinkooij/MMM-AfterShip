@@ -146,7 +146,7 @@ The following properties can be configured:
 			<td>Determines how many days parcels with status "Delivered" should be shown.<br>
 				<br><b>Possible values:</b> <code>integer</code> or <code>true</code>
 				<br><b>Default value:</b> <code>false</code>
-				<br><b>Examples:</b> You can indicate for how many days delivered parcels shoud be shown. The default is <code>false</code> and this shows
+				<br><b>Examples:</b> You can indicate for how many days delivered parcels should be shown. The default is <code>false</code> and this shows
 				all delivered shipments that you still track in Aftership.com. A value of <code>10</code> means hide the Delivered Packages after 10 days. 
 				When you put this to <code>true</code> all delivered parcels are immediately hidden. I wouldn't recommend this setting. 
 			</td>
