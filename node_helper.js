@@ -92,10 +92,10 @@ module.exports = NodeHelper.create({
 		aftershipAPI.GET('/trackings', function(err, result) {
 			if (!err) {
 				if (self.config.autoTranslate) {
-					parcelResult = parcelTestAnswer; //result.data;
+					parcelResult = result.data;
 					self.translate(parcelResult, self.config.autoTranslate);
 				} else {
-					parcelResult = parcelTestAnswer; //result.data;
+					parcelResult = result.data;
 				}
 			} else {
 				console.log(Date(), err);

@@ -58,7 +58,7 @@ config: {
 	isSorted: true,  // sort on delivery Status (most important ones first)
 	compactness: -1, // 0 = elaborate, 1 = compact display, 2 = very compact, one-liner per shipment, -1 = automatic
 	hideExpired: true, // don't show expired parcels
-	hideDelivered: false, // determines whether to show delivered parcels. Not recommended to hide. 
+	hideDelivered: 15, // Hide delivered parcels after 15 days. 
 	updateInterval: 600000, // 10 minutes = 10 * 60 * 1000 milliseconds. 
 	parcelStatusText: ["Exception", "Failed Attempt","In Delivery", "In Transit", 
 	                   "Info Received", "Pending", "Delivered", "Expired"], // This is the default. Enter your own language text
