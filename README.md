@@ -179,13 +179,13 @@ The following properties can be configured:
 				<br><b>Possible values:</b> <code>string</code> 
 				<br><b>Default value:</b> <code>"450px"</code>
 				<br><b>Note:</b> The module will automatically slightly change the way the parcel list looks when the space is narrower than 400px, 
-				to make it more attractive in a narrow space. If you don't like this you can set  either <code>forceNarrow: true</code>, which (aptly) 
-				forces the layout to be a "narrow layout" even when you have a wide layout. The reverse can be done by <code>forceWide: true</code>.
+				to make it more attractive in a narrow space. If you don't like the automatic behavior you can set <code>forceNarrow: true</code>, which (aptly) 
+				forces the layout to be a "narrow layout type" even when you have a wide space for the module. The reverse can be done by <code>forceWide: true</code>.
 			</td>
 		</tr>
 		<tr>
 			<td><code>forceNarrow, forceWide</code></td>
-			<td> See above. 
+			<td> See above. Set none (default), or one of the two. 
 			<br><b>Possible values:</b> <code>true</code> or <code>false</code>
 			</td>
 		</tr>
