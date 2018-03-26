@@ -91,10 +91,9 @@ config: {
 },
 ````
 
-##Basic configuration options
+## Basic configuration options
 
 The following properties can be configured:
-
 
 <table width="100%">
 	<!-- why, markdown... -->
