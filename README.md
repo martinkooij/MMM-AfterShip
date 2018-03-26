@@ -148,7 +148,7 @@ The following properties can be configured:
 				<br><b>Default value:</b> <code>false</code>
 				<br><b>Examples:</b> You can indicate for how many days delivered parcels should be shown. The default is <code>false</code> and this shows
 				all delivered shipments that you still track in Aftership.com. A value of <code>10</code> means hide the Delivered Packages after 10 days. 
-				When you put this to <code>true</code> all delivered parcels are immediately hidden. I wouldn't recommend this setting. 
+				When you put this to <code>true</code> all delivered parcels are immediately hidden. I wouldn't recommend to set it to <code>true</code>. 
 			</td>
 		</tr>
 		<tr>
