@@ -144,11 +144,11 @@ The following properties can be configured:
 		<tr>
 			<td><code>hideDelivered</code></td>
 			<td>Determines how many days parcels with status "Delivered" should be shown.<br>
-				<br><b>Possible values:</b> <code>integer</code> or <code>true</code>
+				<br><b>Possible values:</b> <code>integer</code> or <code>boolean</code>
 				<br><b>Default value:</b> <code>false</code>
-				<br><b>Examples:</b> You can indicate for how many days delivered parcels should be shown. The default is <code>false</code> and this shows
-				all delivered shipments that you still track in Aftership.com. A value of <code>10</code> means hide the Delivered Packages after 10 days. 
-				When you put this to <code>true</code> all delivered parcels are immediately hidden. I wouldn't recommend to set it to <code>true</code>. 
+				<br><b>Examples:</b> When `boolean` the config parameter determines whether delivered packages are hidden. The default is 
+				<code>false</code> which means "not hidden". When using an `integer` the parameter value indicates for how many days delivered 
+				parcels should be shown.  A value of <code>10</code> means "hide the Delivered Packages after 10 days".
 			</td>
 		</tr>
 		<tr>
@@ -164,7 +164,7 @@ The following properties can be configured:
 
 ## Advanced Options and Language Options
 
-<table width="100%">
+<table>
 	<!-- why, markdown... -->
 	<thead>
 		<tr>
@@ -178,8 +178,8 @@ The following properties can be configured:
 			<td>You can set the (maximum)width of your module on the screen in pixels. 
 				<br><b>Possible values:</b> <code>string</code> 
 				<br><b>Default value:</b> <code>"450px"</code>
-				<br><b>Note:</b> The module will automatically slightly change the way the parcel list looks when the space is narrower than 400px, 
-				to make it more attractive in a narrow space. If you don't like the automatic behavior you can set <code>forceNarrow: true</code>, which (aptly) 
+				<br><b>Note:</b> The module will automatically change the way the parcel list looks when the space is narrower than 400px, 
+				to make it more attractive in a narrow space. If you don't like this automatic behavior you can set <code>forceNarrow: true</code>, which (aptly) 
 				forces the layout to be a "narrow layout type" even when you have a wide space for the module. The reverse can be done by <code>forceWide: true</code>.
 			</td>
 		</tr>
