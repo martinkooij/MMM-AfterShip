@@ -187,6 +187,7 @@ The following properties can be configured:
 			<td><code>forceNarrow, forceWide</code></td>
 			<td> See above. Set none (default), or one of the two. 
 			<br><b>Possible values:</b> <code>true</code> or <code>false</code>
+				<br><b>Example:</b> <code>forceNarrow: true</code> to force a "narrow" layout. 
 			</td>
 		</tr>
 		<tr>
@@ -222,7 +223,7 @@ The following properties can be configured:
 		<tr>
 			<td><code>parcelIconColor</code></td>
 			<td>Colors of the parcel status icons in the header<br>
-				<br><b>Possible values:</b> <code>[s1,...,s8]</code>. Array of 8 strings defining the icon colors. 
+				<br><b>Possible values:</b> <code>[string,...,string]</code>. Array of 8 strings defining the icon colors. 
 				<br><b>Default value:</b> <code>["red","red","green","green","cornflowerblue","cornflowerblue","grey","grey"]</code>. 8 colors.
 				<br><b>Note:</b> The colors are icon colors of the Parcel Status in the same order as the texts in the <code>isSorted</code> option above.
 				When you are comfortable with the above mentioned colors you do not need to specify this item in the module-config. 
@@ -234,7 +235,7 @@ The following properties can be configured:
 		<tr>
 			<td><code>parcelStatusText</code></td>
 			<td>Text to show for the statuses of the Parcel<br>
-				<br><b>Possible values:</b> <code>[s1,...,s8]</code>. Array of 8 strings defining the names for the statuses in the order mentioned in the
+				<br><b>Possible values:</b> <code>[string,...,string]</code>. Array of exactly 8 strings defining the names for the statuses in the order mentioned in the
 				       <code>isSorted</code> option above. 
 				<br><b>Default value:</b> <code>["Exception",...,"Expired"]</code>. English is default. Choose your own language descriptions.
 				<br><b>Example:</b> <code> parcelStatusText: ["Fout", "Mislukte bezorging","In bezorging", "Onderweg",
@@ -246,7 +247,7 @@ The following properties can be configured:
 		</tr>			
 		<tr>
 			<td><code>onlyDaysFormat</code></td>
-			<td>Format for delivery time when no hour is yet known for the Parcel. In moment.js calendar format<br>
+			<td>Format for delivery time when only date, and no hour is yet known for the Parcel. In moment.js calendar format<br>
 				<br><b>Possible values:</b> <code>moment.js calendar locale specification</code>
 				<br><b>Default value:</b> 
 				<br><code>{lastDay : '[Yesterday]',</code>
@@ -350,12 +351,13 @@ Example:
 
 ## Newest features
 - narrow layout added
+- hideDelivered can take an integer. 
 - possibility to translate the info texts. 
 - compactness option of -1 added for auto-adjusting display depending on number of parcels shown. 
 - autoHide implemented
 
 ## Latest Releases
-- narrow branch. Added Narrow layout + extended Readme. 
+- narrow branch. Added Narrow layout, hideDelivered in days + extended Readme. 
 - version 1.2.2. Bug fixed, code linting, now displays time of latest checkpoint when no expected delivery is (yet) known. 
                  Message line before clock line.
 - version 1.2.1. Removed spurious debug info to log files
