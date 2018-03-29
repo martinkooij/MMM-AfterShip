@@ -93,11 +93,11 @@ module.exports = NodeHelper.create({
 			if (!err) {
 				if (self.config.autoTranslate) {
 					parcelResult = result.data;
-					if (self.config.debug) { console.log("RESULT.DATA = ", JSON.stringify(result.data));}
+					if (self.config.debug) { console.log("RESULT.DATA-T = ", JSON.stringify(result.data));}
 					self.translate(parcelResult, self.config.autoTranslate);
 				} else {
 					parcelResult = result.data;
-					if (self.config.debug) { console.log("RESULT.DATA = ", JSON.stringify(result.data));}
+					if (self.config.debug) { console.log("RESULT.DATA-NoT = ", JSON.stringify(result.data));}
 				}
 			} else {
 				console.log(Date(), err);
@@ -115,7 +115,7 @@ module.exports = NodeHelper.create({
 		} else if (notification === 'AFTERSHIP_FETCHER') {
 			this.startUpdateNext();
 		} else if (notification === 'INTERVAL_SET') {
-			updateInterval = (payload<30000)?30000:payload;
+			updateInterval = (payload<60000)?60000:payload;
 		} else {
 			console.log("OOPS. ", notification, payload);
 		}
@@ -124,7 +124,7 @@ module.exports = NodeHelper.create({
 	startUpdateNext: function() {
 		var self = this;
 		this.fetchShipments();
-		setTimeout(function(){ self.UpdateNext();}, 3000 ); // give the API some time to return
+		setTimeout(function(){ self.UpdateNext();}, 3500 ); // give the API some time to return before updating
 	},
 		
 	UpdateNext: function(){
@@ -136,223 +136,3 @@ module.exports = NodeHelper.create({
 	},
 	
 });
-
-
-/* This is for testing */
-const parcelTestAnswer = JSON.parse( '{\
-        "page": 1,\
-        "limit": 100,\
-        "count": 3,\
-        "keyword": "",\
-        "slug": "",\
-        "origin": [],\
-        "destination": [],\
-        "tag": "",\
-        "fields": "",\
-        "created_at_min": "2014-03-27T07:36:14+00:00",\
-        "created_at_max": "2014-06-25T07:36:14+00:00",\
-        "trackings": [\
-            {\
-                "id": "53aa7b5c415a670000000021",\
-                "created_at": "2014-06-25T07:33:48+00:00",\
-                "updated_at": "2014-06-25T07:33:55+00:00",\
-                "tracking_number": "123456789",\
-                "tracking_account_number": null,\
-                "tracking_postal_code": null,\
-                "tracking_ship_date": null,\
-                "slug": "dhl",\
-                "active": false,\
-                "custom_fields": {\
-                    "product_price": "USD19.99",\
-                    "product_name": "iPhone Case"\
-                },\
-                "customer_name": null,\
-                "destination_country_iso3": null,\
-                "emails": [\
-                    "email@yourdomain.com",\
-                    "another_email@yourdomain.com"\
-                ],\
-                "expected_delivery": null,\
-                "note": null,\
-                "order_id": "ID 1234",\
-                "order_id_path": "http://www.aftership.com/order_id=1234",\
-                "origin_country_iso3": null,\
-                "shipment_package_count": 0,\
-                "shipment_type": null,\
-                "signed_by": "raul",\
-                "smses": [],\
-                "source": "api",\
-                "tag": "Delivered",\
-                "title": "Pakje met iPhone",\
-                "tracked_count": 1,\
-                "unique_token": "xy_fej9Llg",\
-                "checkpoints": [\
-                    {\
-                        "slug": "dhl",\
-                        "city": null,\
-                        "created_at": "2014-06-25T07:33:53+00:00",\
-                        "country_name": "VALENCIA - SPAIN",\
-                        "message": "Awaiting collection by recipient as requested",\
-                        "country_iso3": null,\
-                        "tag": "InTransit",\
-                        "checkpoint_time": "2014-05-12T12:02:00",\
-                        "coordinates": [],\
-                        "state": null,\
-                        "zip": null\
-                    }\
-                ]\
-            },\
-			{\
-                "tracking_number": "3DT123456789",\
-                "expected_delivery": null,\
-                "tag": "InfoReceived",\
-				"slug": "fedex",\
-                "title": null,\
-				"checkpoints": [\
-					{\
-                        "country_name": "VALENCIA - SPAIN",\
-                        "message": "Awaiting collection by recipient as requested"\
-					},\
-				    {\
-                        "city": "Denver",\
-                        "country_name": "US",\
-                        "message": "Waiting for packet",\
-						"checkpoint_time": "2018-03-26T09:02:00",\
-                        "state": "CO",\
-                        "zip": null\
-                   }\
-                ]\
-			},\
-			{\
-                "tracking_number": "3DS12111111",\
-                "expected_delivery": "2018-03-29",\
-                "tag": "InTransit",\
-                "title": null,\
-				"slug": "postnl",\
-                "checkpoints": [\
-					{\
-                        "country_name": "VALENCIA - SPAIN",\
-                        "message": "Awaiting collection by recipient as requested"\
-					},\
-				    {\
-                        "city": null,\
-                        "country_name": "POSTNL - ADAM",\
-                        "message": "Onderweg uit sorteercentrum",\
-                        "state": null,\
-                        "zip": null\
-                    }\
-                ]\
-            },\
-			{\
-                "tracking_number": "3DS12111111",\
-                "expected_delivery": "",\
-                "tag": "Pending",\
-				"slug": "fedex",\
-                "title": "Electronics spul"\
-            },\
-			{\
-                "tracking_number": "3DT123456789",\
-                "expected_delivery": null,\
-                "tag": "AttemptFail",\
-                "title": null,\
-				"slug": "postnl",\
-                "checkpoints": [\
-					{\
-                        "country_name": "VALENCIA - SPAIN",\
-                        "message": "Awaiting collection by recipient as requested"\
-					},\
-				    {\
-                        "city": null,\
-                        "country_name": "POSTNL - Ldorp",\
-                        "message": "Niet thuis, handtekening benodigd",\
- 						"checkpoint_time": "2018-03-26T09:02:00",\
-						"state": null,\
-                        "zip": null\
-                    }\
-                ]\
-            },\
-			{\
-                "tracking_number": "3DT123456789",\
-                "expected_delivery": "2018-04-02",\
-                "tag": "OutForDelivery",\
-				"slug": "postnl",\
-                "title": null,\
-                "checkpoints": [\
-					{\
-                        "country_name": "VALENCIA - SPAIN",\
-                        "message": "Awaiting collection by recipient as requested"\
-					},\
-				    {\
-                        "city": null,\
-                        "country_name": "POSTNL - Ldorp",\
-                        "message": "Onderweg",\
-                        "state": null,\
-                        "zip": null\
-                    }\
-                ]\
-            },\
-			{\
-                "tracking_number": "3DT11111111",\
-                "expected_delivery": "2018-03-26T07:33:55+00:00",\
-                "tag": "Delivered",\
-                "updated_at": "2018-03-26T07:33:55+00:00",\
-				"slug": "postnl",\
-                "title": null,\
-                "checkpoints": [\
-					{\
-                        "country_name": "VALENCIA - SPAIN",\
-                        "message": "Awaiting collection by recipient as requested"\
-					},\
-				    {\
-                        "city": null,\
-                        "country_name": "POSTNL - Ldorp",\
-                        "message": "Onderweg",\
-                        "state": null,\
-                        "zip": null\
-                    }\
-                ]\
-            },\
-			{\
-                "tracking_number": "3DT122222222",\
-                "expected_delivery": "2018-03-23T07:33:55+00:00",\
-                "updated_at": "2018-03-23T07:33:55+00:00",\
-                "tag": "Delivered",\
-				"slug": "postnl",\
-                "title": null,\
-                "checkpoints": [\
-					{\
-                        "country_name": "VALENCIA - SPAIN",\
-                        "message": "Awaiting collection by recipient as requested"\
-					},\
-				    {\
-                        "city": null,\
-                        "country_name": "POSTNL - Ldorp",\
-                        "message": "Onderweg",\
-                        "state": null,\
-                        "zip": null\
-                    }\
-                ]\
-            },\
-			{\
-                "tracking_number": "3DT123333333333",\
-                "expected_delivery": "2018-02-26T07:33:55+00:00",\
-                "updated_at": "2018-02-26T07:33:55+00:00",\
-                "tag": "Delivered",\
-				"slug": "postnl",\
-                "title": null,\
-                "checkpoints": [\
-					{\
-                        "country_name": "VALENCIA - SPAIN",\
-                        "message": "Awaiting collection by recipient as requested"\
-					},\
-				    {\
-                        "city": null,\
-                        "country_name": "POSTNL - Ldorp",\
-                        "message": "Onderweg",\
-                        "state": null,\
-                        "zip": null\
-                    }\
-                ]\
-            }\
-        ]\
-    }');
