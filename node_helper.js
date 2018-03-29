@@ -59,13 +59,13 @@ module.exports = NodeHelper.create({
 			console.log(Date(), "Too many translation API call errors, translations will be stopped (soon) ", 100 - translationErrcount);
 		}
 		
-		if (data.trackings.length == undefined) {return;}
+		if (!data.trackings.length) {return;}
 		var mstrings = [];
 		var mplaces = [];
 		for (var i = 0; i < data.trackings.length; i++) {
 			var j = data.trackings[i].checkpoints.length;
 
-			if ( j == undefined) {break;}	
+			if (!j) {break;}	
 
 			mstrings.push(data.trackings[i].checkpoints[j-1].message);
 			mplaces.push({p:i,cp: j-1});
