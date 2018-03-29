@@ -185,7 +185,7 @@ The following properties can be configured:
 		</tr>
 		<tr>
 			<td><code>forceNarrow, forceWide</code></td>
-			<td> Manually set the layout for the width. Set <em>one</en> of the two or none (default). 
+			<td> Manually set the layout for the width. Set <em>one</em> of the two or none (default). 
 				<br><b>Possible values:</b> <code>true</code> (or <code>false</code>)
 				<br><b> Default value:</b> None set. 
 				<br><b>Example:</b> <code>forceNarrow: true</code>, when set forces a "narrow" layout (= the layout used when maxWidth <400px) even 
