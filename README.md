@@ -295,7 +295,7 @@ The following properties can be configured:
 </table>
 
 ## Auto Translation
-Many couriers enter checkpoint message in the language of the country of origin, sometimes aftership decides to translate to english, sometimes not.
+Many couriers enter checkpoint message in the language of the country of origin, sometimes aftership decides to translate to English, sometimes not.
 the MMM-Parcel module contains a translation feature of these information texts based on a free Google Translate API. This only works if <code>autoTranslate</code>
 is set to a valid language string (see https://cloud.google.com/translate/docs/languages).  Translation services will not be called if <code>autoTranslate</code> is
 absent or set to <code>false</code>. 
