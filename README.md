@@ -189,7 +189,7 @@ The following properties can be configured:
 				<br><b>Possible values:</b> <code>true</code> (or <code>false</code>)
 				<br><b> Default value:</b> None set. 
 				<br><b>Example:</b> <code>forceNarrow: true</code>, when set forces a "narrow" layout (= the layout used when maxWidth <400px) even 
-				when the module is give a space of 400 pixels or wider. Setting <code>forceWide : true</code> does the reverse. 
+				when the module is give a space of 400 pixels or wider. Setting <code>forceWide: true</code> does the reverse. 
 				The "narrow" vs "wide" layout mainly has a "horizontal" effect. It changes the layout to fit better in narrow spaces or wider spaces
 				respectively.
 				<br><b>Note:</b> Playing with manually set compactness and "narrowness" is possible, however the default automatic behavior should 
@@ -359,11 +359,9 @@ Example:
 - narrow layout added
 - hideDelivered can take an integer. 
 - possibility to translate the info texts. 
-- compactness option of -1 added for auto-adjusting display depending on number of parcels shown. 
-- autoHide implemented
 
 ## Latest Releases
-- narrow branch. Added Narrow layout, hideDelivered in days + extended Readme. 
+- version 1.3.0. Added Narrow layout, hideDelivered in days + editorials on Readme. Removed bug of showing "undefined" when the parcellist is empty. 
 - version 1.2.2. Bug fixed, code linting, now displays time of latest checkpoint when no expected delivery is (yet) known. 
                  Message line before clock line.
 - version 1.2.1. Removed spurious debug info to log files
