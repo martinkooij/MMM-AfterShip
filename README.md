@@ -148,7 +148,7 @@ The following properties can be configured:
 		</tr>
 				<tr>
 			<td><code>maxWidth</code></td>
-			<td>Set the  width of your module on the screen in pixels. 
+			<td>Set the  width of your module on the screen in pixels.<br>
 				<br><b>Possible values:</b> <code>string</code> 
 				<br><b>Default value:</b> <code>"450px"</code>
 				<br><b>Note:</b> The module will automatically adapt the layout to fit better in a narrower space, when the space given 
@@ -185,7 +185,7 @@ The following properties can be configured:
 		</tr>
 		<tr>
 			<td><code>forceNarrow, forceWide</code></td>
-	<td> Manually set the layout for the width. Set <em>one</em> of the two or <em>none</em> (default). 
+	<td> Manually set the layout for the width. Set <em>one</em> of the two or <em>none</em> (default).<br>
 				<br><b>Possible values:</b> <code>true</code> (or <code>false</code>)
 				<br><b> Default value:</b> None set. 
 				<br><b>Example:</b> <code>forceNarrow: true</code>, when set forces a "narrow" layout (= the layout used when maxWidth <400px) even 
