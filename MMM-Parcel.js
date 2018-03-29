@@ -33,7 +33,8 @@ Module.register("MMM-Parcel", {
 			 nextWeek : 'dddd',
 			 sameElse : 'L'},
 		expectedDeliveryText: 'Delivery expected: ',
-		noParcelText : 'No Shipment Data'
+		noParcelText : 'No Shipment Data',
+		debug: false
 	},
 
 	getStyles: function () {
@@ -89,9 +90,7 @@ Module.register("MMM-Parcel", {
 		}
 
 		var later = new Date(this.heyIamHere.getTime() + 30*60*1000);
-		var showAnyway = (now >= this.heyIamHere && now <= later);
-		
-//		this.sendSocketNotification("showanyway :", showAnyway);
+		var showAnyway = (now >= this.heyIamHere && now <= later);	
 		
 		if (!this.loaded) {
 			wrapper.innerHTML = "Loading Parcel module...";
@@ -100,7 +99,7 @@ Module.register("MMM-Parcel", {
 		}
 		
 		var parcelList = this.aftershipResults.trackings;
-//		this.sendSocketNotification("PARCELLISTLENGTH:", parcelList.length);
+		if (this.config.debug) {this.sendSocketNotification("PARCELLISTLENGTH:", parcelList.length);}
 
 		//remove expired/delivered deliveries if hideExpired / hideDelivered is true;
 		var l = [];
@@ -118,7 +117,7 @@ Module.register("MMM-Parcel", {
 		}
 						
 		if (l.length === 0) {
-			wrapper.innerHTML = this.noParcelText;
+			wrapper.innerHTML = this.config.noParcelText;
 			wrapper.classList.add("light", "small");
 			
 			if (showAnyway) {
@@ -157,7 +156,7 @@ Module.register("MMM-Parcel", {
 		// If there are deliveries left, go through all the data
 		var count = 0;
 		for (let p of l) {
-//		this.sendSocketNotification("PACKAGE: ", JSON.stringify(p));				
+		if (this.config.debug) {this.sendSocketNotification("PACKAGE: ", JSON.stringify(p));}
 			if (count++ == this.config.maxNumber) { break; }
 			
 			// headerline 

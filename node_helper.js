@@ -93,9 +93,11 @@ module.exports = NodeHelper.create({
 			if (!err) {
 				if (self.config.autoTranslate) {
 					parcelResult = result.data;
+					if (self.config.debug) { console.log("RESULT.DATA = ", JSON.stringify(result.data));}
 					self.translate(parcelResult, self.config.autoTranslate);
 				} else {
 					parcelResult = result.data;
+					if (self.config.debug) { console.log("RESULT.DATA = ", JSON.stringify(result.data));}
 				}
 			} else {
 				console.log(Date(), err);

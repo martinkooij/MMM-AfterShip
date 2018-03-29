@@ -129,19 +129,6 @@ The following properties can be configured:
 			</td>
 		</tr>
 		<tr>
-			<td><code>compactness</code></td>
-			<td>Determines whether the expected delivery time (if known for the parcel) is shown on a separate line or on the same line 
-			     as the parcel header (see pictures for example). <br>
-				<br><b>Possible values:</b> <code>-1</code>, <code>0</code>, <code>1</code> or <code>2</code>
-				<br><b>Default value:</b> <code>-1</code>
-				<br><b>Note:</b> <code>0</code> displays the shipment with expected delivery time (if present) on a separate line.
-				it also displays a separate info line on the latest checkpoint (if present).
-				<code>1</code> shows a more compact version and <code>2</code> effectively makes it a one-liner per shipment. 
-				<code>-1</code> (=automatic) takes a compactness depending on the #parcels shown 
-				   (<code>0</code> when <=3, <code>1</code> when <=6, <code>2</code> in case of long lists). 
-			</td>
-		</tr>
-		<tr>
 			<td><code>hideDelivered</code></td>
 			<td>Determines how many days parcels with status "Delivered" should be shown.<br>
 				<br><b>Possible values:</b> <code>integer</code> or <code>boolean</code>
@@ -159,6 +146,15 @@ The following properties can be configured:
 				<br><b>Note:</b> Internally the module sets 60000 (1 minute) as an absolute lower bound, whatever the config value is. Don't overload the API!
 			</td>
 		</tr>
+				<tr>
+			<td><code>maxWidth</code></td>
+			<td>Set the  width of your module on the screen in pixels. 
+				<br><b>Possible values:</b> <code>string</code> 
+				<br><b>Default value:</b> <code>"450px"</code>
+				<br><b>Note:</b> The module will automatically adapt the layout to fit better in a narrower space, when the space given 
+				in maxWidth is narrower than 400px.
+			</td>
+		</tr>
 	</tbody>
 </table>
 
@@ -174,20 +170,30 @@ The following properties can be configured:
 	<thead>
 	<tbody>
 		<tr>
-			<td><code>maxWidth</code></td>
-			<td>You can set the (maximum)width of your module on the screen in pixels. 
-				<br><b>Possible values:</b> <code>string</code> 
-				<br><b>Default value:</b> <code>"450px"</code>
-				<br><b>Note:</b> The module will automatically change the way the parcel list looks when the space is narrower than 400px, 
-				to make it more attractive in a narrow space. If you don't like this automatic behavior you can set <code>forceNarrow: true</code>, which (aptly) 
-				forces the layout to be a "narrow layout type" even when you have a wide space for the module. The reverse can be done by <code>forceWide: true</code>.
+			<td><code>compactness</code></td>
+			<td>Determines whether the expected delivery time (if known for the parcel) is shown on a separate line or on the same line 
+			     as the parcel header (see example pictures). <br>
+				<br><b>Possible values:</b> <code>-1</code>, <code>0</code>, <code>1</code> or <code>2</code>
+				<br><b>Default value:</b> <code>-1</code>
+				<br><b>Note:</b> <code>0</code> displays the shipment with expected delivery time (if present) on a separate line.
+				it also displays a separate info line on the latest checkpoint (if present).
+				<code>1</code> shows a more compact version and <code>2</code> effectively makes it a one-liner per shipment. 
+				<code>-1</code> (=automatic) takes a compactness depending on the #parcels shown 
+				   (<code>0</code> when <=3, <code>1</code> when <=6, <code>2</code> in case of long lists). 
+				   It mostly has a "vertical" effect (the higher the compactness level, the less lines it takes on the mirror). 
 			</td>
 		</tr>
 		<tr>
 			<td><code>forceNarrow, forceWide</code></td>
-			<td> See above. Set none (default), or one of the two. 
-			<br><b>Possible values:</b> <code>true</code> or <code>false</code>
-				<br><b>Example:</b> <code>forceNarrow: true</code> to force a "narrow" layout. 
+			<td> Manually set the layout for the width. Set <em>one</en> of the two or none (default). 
+				<br><b>Possible values:</b> <code>true</code> (or <code>false</code>)
+				<br><b> Default value:</b> None set. 
+				<br><b>Example:</b> <code>forceNarrow: true</code>, when set forces a "narrow" layout (= the layout used when maxWidth <400px) even 
+				when the module is give a space of 400 pixels or wider. Setting <code>forceWide : true</code> does the reverse. 
+				The "narrow" vs "wide" layout mainly has a "horizontal" effect. It changes the layout to fit better in narrow spaces or wider spaces
+				respectively.
+				<br><b>Note:</b> Playing with manually set compactness and "narrowness" is possible, however the default automatic behavior should 
+				be working for most. 
 			</td>
 		</tr>
 		<tr>
