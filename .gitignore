@@ -1,3 +1,4 @@
 parceltranslate-credentials.json
 node_modules
 manualtrans
+webinterface/src/apikey.js
