@@ -117,7 +117,7 @@ module.exports = NodeHelper.create({
 		var self = this;
 		var apiurl = 'https://api.tracktry.com/v1' + '/trackings' ;
 		var apiurlget = apiurl + '/get?page=1&limit=25';
-		console.log('[DEBUG] Fetch Shipments') ;
+//		console.log('[DEBUG] Fetch Shipments') ;
 		apirequest.get({
 			url: apiurlget,
 			headers: { 
