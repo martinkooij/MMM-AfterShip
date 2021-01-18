@@ -311,9 +311,7 @@ Basically the steps are as follows ( Additional help documents with detailed exp
 
 The code is careful with calling this API. Already translated sentences are stored in memory for retrieval, so the translate API is used for new translations only, or after a reboot. With 100 Parcels / month it will be practically impossible to surpass the maximum free Google Translate tier of 500.000 characters. With heavy usage I am on 750 characters / day on average, mostly lower. 
 
-This only works if <code>autoTranslate</code>
-is set to a valid language string (see https://cloud.google.com/translate/docs/languages).  Translation services will not be called if <code>autoTranslate</code> is
-absent or set to <code>false</code>. 
+<code>autoTranslate</code> should be set to a valid language string (see https://cloud.google.com/translate/docs/languages).  Translation services will not be called if <code>autoTranslate</code> is absent or set to <code>false</code>. 
  
 An example of a non-translated view on the mirror: 
  
@@ -354,8 +352,8 @@ And Yo, see the Dutch mirror:
 ![](pictures/6.png)
 
 
-<em>Advanced users:</em> When you don't like certain automated translations you can put a forced translation JSON file in de MMM-Parcel module directory called <code>manualtrans-xx.json</code>, where "xx" is the selected language ("manualtrans-nl" for Dutch). 
-Don't worry, the file, if it exists, is ignored by `git pull` so will not be overwritten by an update. The file is a JSON formatted text file (don't make any JSON syntax errors!) of translation pairs of original texts (full sentences) and translated texts. The translation translates complete message entries not word by word. 
+<em>Advanced users:</em> When you don't like certain automated translations you can put a forced translation JSON file in a MMM-Parcel module subdirectory  <code>manualtrans/xx.json</code>, where "xx" is the selected language ("manualtrans/nl.json" for Dutch). 
+Don't worry, all files in the `manualtrans/` directory are ignored by `git pull` so will not be overwritten by a normal update of the module; except in the case of a clean re-install, of course. The file is a JSON formatted text file (don't make any JSON syntax errors!) of translation pairs of original texts (full sentences) and translated texts. The translation translates complete message entries not word by word. 
 Example:
 ````
 {
@@ -368,7 +366,7 @@ For Dutch users, the web interface at tracktry.com does not allow for entering t
 
 To work around this problem the MMM-Parcel package also installs a very basic extra webinterface to tracktry.com. This PMM-Parcel web interface comes *with* a possibility to enter the receiver postal code necessary for your postnl-3s packages. Note that once entered they are counted towards your tracktry.com tier. Also you will be able to see, manage and delete the items on the my.tracktry.com => Shipments page.
 
-To start this webinterface you will need to go to the <code>MMM-Parcel/webinterface<code> directory. You have to enter your own tracktry API key in the apikey.js code and subsequently start the website with <code>npm start parcelweb &<code> in that directory. Or preferrably use the <code>pm2<code> feature for that, so it will start automatically at boot time or when it crashes for whatever reason. The MagicMirror documentation on https://github.com/MichMich/MagicMirror/wiki/Auto-Starting-MagicMirror explains the use of pm2 quite well. Don't forget to do <code>pm2 save<code> in order to make the pm2 configuration permanent across rebooting.  
+To start this webinterface you will need to go to the <code>MMM-Parcel/webinterface</code> directory. You have to enter your own tracktry API key in the apikey.js code and subsequently start the website with <code>npm start parcelweb &</code> in that directory. Or preferrably use the <code>pm2</code> feature for that, so it will start automatically at boot time or when it crashes for whatever reason. The MagicMirror documentation on https://github.com/MichMich/MagicMirror/wiki/Auto-Starting-MagicMirror explains the use of pm2 quite well. Don't forget to do <code>pm2 save</code> in order to make the pm2 configuration permanent across rebooting.  
 
 You can then use the interface by pointing a browser to http://xxxx.yyyy.zzzz.aaaa:3000 where xxxx.yyyy.zzzz.aaaa is the local IP adress of the raspberry pi serving the mirror. You can now manage entering the postnl-3s parcels via this web interface. My advice is not to expose this interface to the outside world, for security reasons. 
 
