@@ -228,8 +228,8 @@ router.get('/getlist', (req, res) => {
 //					console.log(JSON.stringify(parcelList,undefined,2));
 //					console.log(JSON.stringify(json,undefined,2));
 					parcelList.items = json.data.items ;
-//					console.log(JSON.stringify(parcelList,undefined,2));					
-					parcelList.items.forEach((item,index) => {
+					console.log(JSON.stringify(parcelList,undefined,2));					
+//					parcelList.items.forEach((item,index) => {
 						itemList.push({tracking_number : item.tracking_number, carrier_code : item.carrier_code, index : index, status : item.status });
 					});
 					res.render('getlist', {plpl : itemList, title: 'MMM-Parcel' }) ;
