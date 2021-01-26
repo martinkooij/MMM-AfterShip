@@ -73,7 +73,7 @@ Module.register("MMM-Parcel", {
 			"undelivered",
 			"pickup",
 			"transit",
-			"pending",
+			["pending", "InfoReceived"],
 			"notfound",
 			"delivered",
 			"expired"
