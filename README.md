@@ -409,10 +409,11 @@ automatically installed via `npm install`
 
 ## Latest Releases
 - version 2.1.0
--    Refactor of handling code, replaced deprecated "request" with "node-fetch", cleaned code by using async/await
--    Created a middleware "api normalizer" to prepare for ever changing API's and making display module more robust
--    Depends on nodejs >= V10 ( newer than 2nd quarter of 2018)
-
+````
+- Refactor of handling code, replaced deprecated "request" with "node-fetch", cleaned code by using async/await
+- Created a middleware "api normalizer" to prepare for ever changing API's and making display module more robust
+- Depends on nodejs >= V10 ( newer than 2nd quarter of 2018)
+````
 - version 2.0.1  *last version working with nodejs < V10. Deprecated.* 
 - version 2.0.0  Tracktry & webinterface. 
 - version 1.3.0. Added Narrow layout, hideDelivered in days + editorials on Readme. Removed bug of showing "undefined" when the parcellist is empty. 
