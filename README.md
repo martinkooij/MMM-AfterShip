@@ -424,6 +424,5 @@ automatically installed via `npm install`
 
 ## Known issues
 - Tracktry does a reasonably good job in collecting  information from the couriers (at a rate of once every 2 to 3 hours) but is not perfect. Use the mirror presentation as a hint. Often the websites of the couriers give more detailed information that are not accessible via this API.  
-- On full mirrors with many modules the google API translations (if set) sometimes arrive just after the visual update during start-up. 
-No problem, in the next update cycle the translations are picked up. And a mirror is only booted up once a month or less no?
+
 
