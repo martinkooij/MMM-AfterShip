@@ -1,7 +1,7 @@
 const express = require('express');
 const { check, validationResult, matchedData } = require('express-validator');
 const router = express.Router();
-const apirequest = require('request');
+const apifetch = require('node-fetch');
 var apiKey = require('./apikey') ;
 
 router.get('/', (req, res) => {
@@ -80,66 +80,49 @@ router.post('/parcel', [
     var apiurl = 'https://api.tracktry.com/v1' + '/trackings' ;
 	var apiurlpost = apiurl + '/post';
 	var apiurlrealtime = apiurl + '/realtime';
-	apirequest.post({
-			url: apiurlpost,
-			json: { tracking_number: data.trackingcode,
-					carrier_code: data.handler,
-					tracking_postal_code: data.postalcode,
-					destination: data.postalcode,
-					title: data.title,	
-			},
-			headers: { 
-				'Content-Type': 'application/json',
-				'Tracktry-Api-Key': apiKey
-			},
-			method: 'POST'
-			},
-		function (e, r, body) {
-			if (!e && body.meta.code == 200) {
-//				console.log('API e:',e);
-//				console.log('API b:', body);
-				var bodyrequest = { tracking_number: data.trackingcode,
-									carrier_code: data.handler,
-									tracking_postal_code: data.postalcode,
-									destination: data.postalcode,
-									title: data.title
-				};
-				if (data.postalcode != "") { bodyrequest.destination_code = "nl" } ;
-//				console.log('bodyrequest realtime:', JSON.stringify(bodyrequest,undefined,2));
-				apirequest.post({  // kick the retrieval by executing once realtime retrieval when entering
-					url: apiurlrealtime,
-					json: bodyrequest,
-					headers: { 
-						'Content-Type': 'application/json',
-						'Tracktry-Api-Key': apiKey
-					},
-					method: 'POST'
-					},
-					function (e, r, body) {     
-						if (!e && body.meta.code == 200) {
-//							console.log('API e2:',e);
-//							console.log('API b2:', JSON.stringify(body, undefined,2));	
-							;
-						} else {
-							console.log('API e3:',e);
-							console.log('API b3:', body);
-						}
-					});
-				req.flash('success', 'Entered '+ data.trackingcode + ' to Tracktry.com');
-				res.redirect('/');
+	const bodyjson = {tracking_number: data.trackingcode,
+					  carrier_code: data.handler,
+					  tracking_postal_code: data.postalcode,
+					  title: data.title,	
+					};
+	if (data.postalcode != "") { bodyjson.destination_code = "nl"; bodyjson.destination = data.postalcode ; } 
+	async function postandfetch() {
+		var resultpost;
+		var resultkick;
+		try {
+			const response = await apifetch( apiurlpost, {
+				method: 'post',
+				headers: { 
+					'Content-Type': 'application/json',
+					'Tracktry-Api-Key': apiKey
+				},
+				body: JSON.stringify(bodyjson)
+			});
+			resultpost = await response.json() ;
+			if (resultpost.meta.code != 200) { throw ({name: "parcelput FAIL", message: resultpost}) }
+			const response2 = await apifetch( apiurlrealtime, {
+				method: 'post',
+				headers: { 
+					'Content-Type': 'application/json',
+					'Tracktry-Api-Key': apiKey
+				},
+				body: JSON.stringify(bodyjson)
+			});
+			resultkick = await response2.json() ;
+			req.flash('success', 'Entered '+ data.trackingcode + ' to Tracktry.com');
+			res.redirect('/');
+		} catch(error) {
+			if (error.name === "parcelput FAIL") {
+				req.flash('success', 'Failed to enter '+ data.trackingcode + ' to Tracktry.com: ' + error.message.meta.code + ", " + error.message.meta.type + ", " + error.message.meta.message);
 			} else {
-				console.log('API e4:',e);
-				console.log('API b4:', body);
-				if (!e) {
-					req.flash('success', 'Failed to enter '+ data.trackingcode + ' to Tracktry.com:' + body.meta.code + ", "+ body.meta.message);
-				} else {
-					req.flash('success', 'Failed to enter '+ data.trackingcode + ' to Tracktry.com:' + e.errno + ", "+ e.code);
-				}					
-				res.redirect('/');
-			}
-		});
-});
-
+				req.flash('success', 'Failed to enter '+ data.trackingcode + ' to Tracktry.com:' + JSON.stringify(error));
+			};
+			res.redirect('/');
+		}
+	};
+	postandfetch() ;
+});			
+			
 
 router.post('/getonce', [
   check('trackingcode')
@@ -155,7 +138,6 @@ router.post('/getonce', [
   check('title')
      .trim()  
 ], (req, res) => {
-  var self = this ;
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.render('getonce', {
@@ -166,7 +148,6 @@ router.post('/getonce', [
   }
   const data = matchedData(req);
     var apiurl = 'https://api.tracktry.com/v1' + '/trackings' ;
-	var apiurlpost = apiurl + '/post';
 	var apiurlrealtime = apiurl + '/realtime';
 	var bodyrequest = { tracking_number: data.trackingcode,
 					carrier_code: data.handler,
@@ -175,69 +156,57 @@ router.post('/getonce', [
 					title: data.title
 			};
 	if (data.postalcode != "") { bodyrequest.destination_code = "nl" } ;
-	apirequest.post({
-			url: apiurlrealtime,
-			json: bodyrequest,
-			headers: { 
-				'Content-Type': 'application/json',
-				'Tracktry-Api-Key': apiKey
-			},
-			method: 'POST'
-			},
-		function (e, r, body) {
-			if (!e && body.meta.code == 200) {
+	(async function () {
+		try {
+			const result = await apifetch(apiurlrealtime, {
+				headers: { 
+					'Content-Type': 'application/json',
+					'Tracktry-Api-Key': apiKey
+					},
+				method: 'POST',
+				body: JSON.stringify(bodyrequest)
+				});
+			var trackingresult = await result.json() ;
+			if (trackingresult.meta.code != 200) { throw ({name: "parcelrealtime ERROR", message: trackingresult}) };
+			console.log('API b:', JSON.stringify(trackingresult, undefined,2));			
+			req.flash('success', 'shown '+ data.trackingcode + ' to console.log');
+			res.redirect('/');
+		} catch (e) {
 				console.log('API e:',e);
-				console.log('API b:', JSON.stringify(body, undefined,2));			
-				req.flash('success', 'shown '+ data.trackingcode + ' to console.log');
 				res.redirect('/');
-			} else {
-				console.log('API e:',e);
-				console.log('API b:', body);
-				if (!e) {
-					req.flash('success', 'Failed to enter '+ data.trackingcode + ' to Tracktry.com:' + body.meta.code + ", "+ body.meta.message);
-				} else {
-					req.flash('success', 'Failed to enter '+ data.trackingcode + ' to Tracktry.com:' + e.errno + ", "+ e.code);
-				}					
-				res.redirect('/');
-			}
-		});
+		}
+		})();
 });
 
 
 router.get('/getlist', (req, res) => {
     var apiurl = 'https://api.tracktry.com/v1' + '/trackings' ;
 	var apiurlget = apiurl + '/get?page=1&limit=25';
-	apirequest.get({
-			url: apiurlget,
-			headers: { 
-				'Content-Type': 'application/json',
-				'Tracktry-Api-Key': apiKey
-			},
-			method: 'GET'
-			},
-		function (e, r, body) {
-				var parcelList = {items : []};
-//				console.log('E--------------------------');
-//				console.log(e);
-//				console.log('R--------------------------');	
-//				console.log(r);
-//				console.log('B--------------------------');					
-				if ( (!e) && ((JSON.parse(body)).meta.code == 200)) {
-					var json = JSON.parse(body);
-					var itemList = [] ;
-//					console.log(JSON.stringify(parcelList,undefined,2));
-//					console.log(JSON.stringify(json,undefined,2));
-					parcelList.items = json.data.items ;
-//					console.log(JSON.stringify(parcelList,undefined,2));					
-					parcelList.items.forEach((item,index) => {
-						itemList.push({tracking_number : item.tracking_number, carrier_code : item.carrier_code, index : index, status : item.status });
-					});
-					res.render('getlist', {plpl : itemList, title: 'MMM-Parcel' }) ;
-				} else {
-				res.render('getlist', {plpl : [], title: 'MMM-Parcel' }) ;					
-				console.log(Date(), e, body);
-				}
-		});
+	(async function () {
+		var parcelList = {items : []};
+		var body ;
+		try {
+			const result = await apifetch(apiurlget, 
+				{
+					headers: { 
+						'Content-Type': 'application/json',
+						'Tracktry-Api-Key': apiKey
+					},
+					method: 'GET'
+				});
+			body = await result.json() ;
+			if (body.meta.code != 200) { throw (body,meta) ;}
+			var itemList = [] ;
+			parcelList.items = body.data.items ;				
+			parcelList.items.forEach((item,index) => {
+				itemList.push({tracking_number : item.tracking_number, carrier_code : item.carrier_code, index : index, status : item.status });
+			});
+			res.render('getlist', {plpl : itemList, title: 'MMM-Parcel' }) ;			
+		} catch (e) {
+			res.render('getlist', {plpl : [], title: 'MMM-Parcel' }) ;					
+			console.log('ERROR GETLIST:',Date(), 'ERROR:', e, 'BODY:', body);
+		}
+	})();
 	}
 );
 
