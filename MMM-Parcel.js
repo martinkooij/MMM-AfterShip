@@ -109,10 +109,16 @@ Module.register("MMM-Parcel", {
 		//remove expired/delivered deliveries if hideExpired / hideDelivered is true;
 		var l = [];
 		for (var i = 0; i < this.parcelList.length; i++) {
+			 var clockTime = "2100-01-01 00:00+0000";
+				if ( this.parcelList[i].last_loc && (this.parcelList[i].last_loc.time) ){
+					clockTime = this.parcelList[i].last_loc.time;
+				} else {
+					clockTime = this.parcelList[i].updated_time ;
+				}
 			if 	(
 				!( 
 				((this.config.hideDelivered === true) && this.parcelList[i].status == "delivered") ||
-				(this.parcelList[i].status == "delivered" && Number.isInteger(this.config.hideDelivered) &&  moment().diff(this.parcelList[i].updated_at,'days') >= this.config.hideDelivered)
+				(this.parcelList[i].status == "delivered" && Number.isInteger(this.config.hideDelivered) &&  (moment().diff(clockTime,'days') >= this.config.hideDelivered))
 				)&& 
 				!(this.config.hideExpired && this.parcelList[i].status == "expired")
 				) {

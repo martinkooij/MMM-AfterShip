@@ -39,7 +39,7 @@ function normalize(rawList) {  // normalize for Tracktry Interface
 				const rawLoc_d = (rawItem.destination_info && rawItem.destination_info.trackinfo && rawItem.destination_info.trackinfo[0]) ;
 				const rawLoc = newest(rawLoc_o,rawLoc_d);
 				if (rawLoc) {
-					lastLoc.time = rawLoc.Date ;
+					lastLoc.time = adaptTime(item,rawLoc.Date) ;
 					lastLoc.info = rawLoc.StatusDescription.trim() ;
 					lastLoc.details = rawLoc.Details.trim() ;
 					item.substatus = rawLoc.substatus ;  // note that this is moved to toplayer
@@ -67,7 +67,7 @@ function printMap(map) {
 
 function adaptTime(item,t) {
 	if (item.courier_code === "postnl-3s") {
-		if (t && !t.includes("-", 11) && !t.includes("+", 11) ) {t += " +0700"}; // adjust time at postnl-3s if no TZ given
+		if (t && !t.includes("-", 11) && !t.includes("+", 11) ) {t = t.trim()+"+0700"}; // adjust time at postnl-3s if no TZ given
 	}
 	return t // no adjustments known for other couriers
 }
