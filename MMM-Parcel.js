@@ -34,8 +34,8 @@ Module.register("MMM-Parcel", {
 			 lastWeek : '[Last] dddd',
 			 nextWeek : 'dddd',
 			 sameElse : 'L'},
-		expectedDeliveryText: 'Expected delivery: ', // Not in use with tracktry
-		lastUpdateText: 'Last Update: ', // New with tracktry
+		expectedDeliveryText: 'Expected delivery: ',  
+		lastUpdateText: 'Last Update: ', 
 		noParcelText : 'No Shipment Data',
 		debug: false,
 		testRead: false
@@ -73,7 +73,7 @@ Module.register("MMM-Parcel", {
 		var wrapper = document.createElement("table");
 		wrapper.className = "small";
 		wrapper.style.maxWidth = this.config.maxWidth;
-		const parcelStatus = [ "exception", "undelivered", "pickup", "transit", "pending", "notfound", "delivered", "expired"];
+		const parcelStatus = [ "exception", "undelivered", "indelivery", "transit", "pending", "notfound", "delivered", "expired"];
 		const parcelIcons = [ "fas fa-exclamation-triangle fa-fw", "fas fa-bolt fa-fw", "fas fa-truck fa-fw", "fas fa-exchange-alt fa-fw",
 							  "far fa-file-alt fa-fw", "fas fa-question fa-fw", "far fa-check-square fa-fw", "fas fa-history fa-fw"];
 		const parcelStatustext = this.config.parcelStatusText;
@@ -216,46 +216,46 @@ Module.register("MMM-Parcel", {
 				headerwrapper.colSpan = (timeFormat === 2)?"3":"2";
 				parcelWrapperheaderline.appendChild(headerwrapper);
 				
-				var clockTime = null;
-				if ( lastLoc && (lastLoc.time) ){
-					clockTime = lastLoc.time;
-				} else {
-					clockTime = p.updated_time ;
-				}
+				var ctE = { clockTime : ((p.expected_deliverytime === "")? null:p.expected_deliverytime) , type : 'expected' };
+				var ctL = { clockTime : ( (lastLoc && lastLoc.time)? lastLoc.time : p.updated_time), type : 'last' } ;
+				var ct = (ctE.clockTime && (p.status != "delivered") && (moment(ctE.clockTime)>=moment(ctL.clockTime)))?ctE:ctL;
+				
 				
 				var deliverywrapper = document.createElement("td");
 				deliverywrapper.innerHTML = "";
 				
-				if ( clockTime ) {
+				if ( ct.clockTime ) {
 					var startofDay = moment().startOf("day");
-					var delivery = moment(clockTime);
+					var delivery = moment(ct.clockTime);
 					var today = delivery >= startofDay &&  delivery < (startofDay + 24 * 60 * 60 * 1000);
 					var thisweek = delivery >= (startofDay + 24 * 60 * 60 * 1000) && delivery < (startofDay + 7 * 24 * 60 * 60 * 1000);
 					if (timeFormat === 2) {
-						if (clockTime.includes("T") || clockTime.includes(":")) {
-							deliverywrapper.innerHTML = this.config.lastUpdateText + 
-							moment(clockTime).calendar();
+						if (ct.clockTime.includes("T") || ct.clockTime.includes(":")) {
+							deliverywrapper.innerHTML = 
+								((ct.type === 'expected')? this.config.expectedDeliveryText : this.config.lastUpdateText)  + 
+								moment(ct.clockTime).calendar();
 						} else {
-							deliverywrapper.innerHTML = this.config.lastUpdateText + 
-							moment(clockTime).calendar(null,this.config.onlyDaysFormat);
+							deliverywrapper.innerHTML = 
+								((ct.type === 'expected')? this.config.expectedDeliveryText : this.config.lastUpdateText)  +
+								moment(ct.clockTime).calendar(null,this.config.onlyDaysFormat);
 						}
 					} else if (timeFormat === 1) {
 						if (today) {
-							deliverywrapper.innerHTML = moment(clockTime).format('LT');
+							deliverywrapper.innerHTML = moment(ct.clockTime).format('LT');
 						} else if (thisweek) {
-							if (clockTime.includes("T") || clockTime.includes(":")) {
-								deliverywrapper.innerHTML = moment(clockTime).format('dd LT');
+							if (ct.clockTime.includes("T") || ct.clockTime.includes(":")) {
+								deliverywrapper.innerHTML = moment(ct.clockTime).format('dd LT');
 							} else {
-								deliverywrapper.innerHTML = moment(clockTime).format('dddd');
+								deliverywrapper.innerHTML = moment(ct.clockTime).format('dddd');
 							}
 						} else {
-							deliverywrapper.innerHTML = moment(clockTime).format('L');
+							deliverywrapper.innerHTML = moment(ct.clockTime).format('L');
 						}
 					} else { //timeFormat === 0
-						if (today && (clockTime.includes("T") || clockTime.includes(":"))) {
-							deliverywrapper.innerHTML = moment(clockTime).format((config.timeFormat==24)?"HH:mm":"ha");
+						if (today && (ct.clockTime.includes("T") || ct.clockTime.includes(":"))) {
+							deliverywrapper.innerHTML = moment(ct.clockTime).format((config.timeFormat==24)?"HH:mm":"ha");
 						} else if (thisweek) {
-							deliverywrapper.innerHTML = moment(clockTime).format('dd');
+							deliverywrapper.innerHTML = moment(ct.clockTime).format('dd');
 						}
 					}	
 				}
@@ -280,7 +280,7 @@ Module.register("MMM-Parcel", {
 
 			wrapper.appendChild(parcelWrapperheaderline);
 			
-			if (clockTime && (timeFormat === 2)) {
+			if (ct.clockTime && (timeFormat === 2)) {
 				var clockicon;		
 				clockicon = this.makeParcelIconWrapper("fa fa-clock-o fa-fw");
 				deliverywrapper.colSpan = "2";
@@ -322,7 +322,7 @@ Module.register("MMM-Parcel", {
 				infotextwrapper.innerHTML = extraInfoText;
 				//change delivered icon color to "OutforDelivery" color if still to be collected
 				if ( p.tobe_collected && p.status === "delivered" ) {
-					thisParcelIcon.style.color = parcelIconColor[parcelStatus.indexOf("pickup")];
+					thisParcelIcon.style.color = parcelIconColor[parcelStatus.indexOf("indelivery")];
 				}
 				parcelWrapperinfoline.appendChild(infotextwrapper);
 				// add infoline unless very compact style

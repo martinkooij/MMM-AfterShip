@@ -6,11 +6,13 @@
 /*******************************/
 var moment = require('moment');
 
-function normalize(rawList) {  // normalize for Tracktry Interface
+function normalize(rawList) {  // normalize for Aftership Interface
 		const statMap = new Map();
 		var list = [];
 		if ( !Array.isArray(rawList)) { return (list)}
 		setMap(statMap) ;
+//		console.log('DEBUG normalize aftership');
+//		printMap(statMap);
 		for (const rawItem of rawList) {
 			var item = {
 				courier_name : "",
@@ -27,22 +29,34 @@ function normalize(rawList) {  // normalize for Tracktry Interface
 			try {
 				var lastLoc = {} ;
 				item.courier_name = null ;
-				item.courier_code = rawItem.carrier_code ;
-				item.tobe_collected = (raw.Item.status === "pickup") ;
-				item.status = statMap.get(rawItem.status)?statMap.get(rawItem.status):"pending" ; // only known statuses are passed all others are mapped to "pending"
+				item.courier_code = rawItem.slug ;
+				item.tobe_collected = (rawItem.tag === "AvailableForPickup") ;
+				item.status = statMap.get(rawItem.tag)?statMap.get(rawItem.tag):"pending" ; // only known statuses are passed all others are mapped to "pending"
 				item.tracking_code = rawItem.tracking_number ;			
 				item.title = rawItem.title ;
 				item.updated_time = rawItem.updated_at ;
-				item.expected_deliverytime = null ;
+				item.expected_deliverytime = rawItem.expected_delivery ;
 				item.substatus = null ;
-				const rawLoc_o = (rawItem.origin_info && rawItem.origin_info.trackinfo && rawItem.origin_info.trackinfo[0]) ;
-				const rawLoc_d = (rawItem.destination_info && rawItem.destination_info.trackinfo && rawItem.destination_info.trackinfo[0]) ;
-				const rawLoc = newest(rawLoc_o,rawLoc_d);
+				const rawLoc = (rawItem.checkpoints && rawItem.checkpoints.length != 0)?
+					rawItem.checkpoints[rawItem.checkpoints.length - 1] : null ;
+					console.log('DEBUG aftership normalize', JSON.stringify(rawLoc));
 				if (rawLoc) {
-					lastLoc.time = adaptTime(item,rawLoc.Date) ;
-					lastLoc.info = rawLoc.StatusDescription.trim() ;
-					lastLoc.details = rawLoc.Details.trim() ;
-					item.substatus = rawLoc.substatus ;  // note that this is moved to toplayer
+					lastLoc.time = rawLoc.checkpoint_time ;
+					if (rawLoc.subtag_message && (rawLoc.subtag_message != "Delivered")) {
+						lastLoc.info = rawLoc.message.trim() + ", " +rawLoc.subtag_message.trim();
+					} else {
+						lastLoc.info = rawLoc.message.trim()
+					};
+					var d = rawLoc.location ;
+					if ( rawLoc.state && rawLoc.state != "" && !d.includes(rawLoc.state)) {
+						d += ("," + rawLoc.state)
+					}
+					if ( rawLoc.country_name === "NLD") {rawLoc.country_name = "NL" ;} // to prevent double country info NL vs NLD
+					if ( rawLoc.country_name && rawLoc.country_name != "" && !d.includes(rawLoc.country_name)) {
+						d += ("," + rawLoc.country_name)
+					}
+					lastLoc.details = d.trim() ;
+					item.substatus = rawLoc.subtag ;  // note that this is moved to toplayer
 				}
 				item.last_loc = (Object.keys(lastLoc).length > 0)?lastLoc:null; ;
 			} catch(e) { console.log ('[ERROR NORMALIZING Parcel in MMM-Parcel]', e, rawItem);} ;
@@ -54,11 +68,11 @@ function normalize(rawList) {  // normalize for Tracktry Interface
 
 function setMap(map) {
 	//defaults
-	statusList = ["exception","undelivered", "indelivery", "transit", "pending", "notfound", "delivered", "expired"] ;
-	statusList.forEach( (v) => map.set(v,v) ) ;
+	const statusList = ["exception","undelivered", "indelivery", "transit", "pending", "notfound", "delivered", "expired"] ;
+	const aftershipList = ["Exception","AttemptFail","OutforDelivery","InTransit", "InfoReceived","NotFound","Delivered","Expired"]
+	statusList.forEach( (v,i) => map.set(aftershipList[i],v) ) ;
 	//extra mappings
-	map.set("InfoReceived","pending") ;	// UPS
-	map.set("pickup", "delivered") ; // map pickup status to delivered
+	map.set("AvailableForPickup","delivered") ; // mark pickup as delivered. 
 }
 
 function printMap(map) {
@@ -88,12 +102,13 @@ module.exports = normalize ;
 /*  	{
 /* 		courier_name : full text name of courier if available (not used in MMM-Parcel),
 /* 		courier : short code of courier,
-/*		status : one of "exception","undelivered", "pickup", "transit", "pending", "notfound", "delivered", "expired",
+/*		status : one of "exception","undelivered", "indelivery", "transit", "pending", "notfound", "delivered", "expired",
 /*		substatus : substatus (see internet, not (yet) used in MMM-Parcel)
+/*		tobe_collected : if parcel can be collected by recipient
 /*		tracking_code : tracking identifier ;			
 /*		title : text title ,
-/*		updated_time :last updated time ( parsable time string),
-/*		expected_deliverytime : expected delivery time if available (parsable time string, not used in MMM-Parcel),
+/*		updated_time :last updated time of tracking item in interface ( parsable time string),
+/*		expected_deliverytime : expected delivery time if available (parsable time string),
 /*		last_loc : 
 /*		  {
 /*			time : time at this location event,
