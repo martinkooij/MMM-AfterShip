@@ -19,7 +19,7 @@ And in the very compact view (one-liner per shipment):
 
 ![](pictures/3.png)
 
-## Installation
+## Installation / Getting Started
 
 * Go into the `~/MagicMirror/modules` directory and do `git clone https://github.com/martinkooij/MMM-Parcel`.
 
@@ -33,7 +33,7 @@ And in the very compact view (one-liner per shipment):
 
 * OR
 
-* - Get an account on aftership.com (Free account works again, you have to create a new one, the old ones don't work anymore)
+* - Get an account on aftership.com (Free account works again, you have to create a new one, the old keys from before 2021 don't work anymore)
 
 * - Get your API Key from https://admin.aftership.com/settings -> API Keys (at right hand top of webpage). 
 
@@ -43,14 +43,13 @@ And in the very compact view (one-liner per shipment):
 
 * - AfterShip: press add tracking. It will guide you through entering the parcel. For deleting a tracking you have to open the parcel details and press the "delete"-icon. Only parcels entered via the Aftership website will be shown on the mirror. Parcels entered via the aftership mobile app are not displayed on the mirror. 
 
-* Aftership is advised, for more detail.  
+* Aftership is advised, more reliable details are provided.  
 
 * Tell me what you like, or any issues you have.
 
 ## Updates
 Do a `git pull` in the MMM-Parcel module directory. Running a `npm install` again in the same directory is recommended and does no harm. 
-In case supporting features need new packages, such as when you upgrade to a version 
-with the automatic translations feature, the `npm install` is really needed.
+In case supporting features need new packages the `npm install` is mandatory. This will be indicated in the release notes.
 
 ## Using the module
 
@@ -99,7 +98,7 @@ module: 'MMM-Parcel',
 position: 'top_right',	// This can be any of the regions. Best results in left or right regions.
 header: 'My Parcels',   // This is optional
 config: {
-	useTrackTry: 'Your API KEY goes here' // Your API Key from tracktry.com
+	useAfterShip: 'Your API KEY goes here' // Your API Key from tracktry.com
 	}
 },
 ````
@@ -324,7 +323,7 @@ You can manage the parcels to be tracked on the mirror by managing the list in t
 
 For Tracktry: use https://my.tracktry.com/shipments. Here you can enter new parcels to be tracked and delete selected parcels from the list again if no longer relevant. Tracking number and courier code are mandatory. In this webarea you will also find your monthly usage and your API key. 
 
-Works about the same for the AfterShip API. Manage you trackings via the website (https://admin.aftership.com/shipments). Here you can add and delete shipments. The shipments in this list will be eligible for display on the mirror. 
+Works about the same for the AfterShip API. Manage you trackings via the website (https://admin.aftership.com/shipments). Here you can add and delete shipments. The shipments in this list will shown on the mirror. 
 
 ## Auto Translation
 Many couriers enter checkpoint message in the language of the country of origin. The MMM-Parcel module contains a translation feature of these information texts based on the Google Translate API, with a free 500.000 characters per month. 
@@ -336,7 +335,7 @@ Basically the steps are as follows ( Additional help documents with detailed exp
 * create a service account and generate and download the json service account key-file.
 * copy the key file to parceltranslate-credentials.json in the MMM-Parcel directory. 
 
-The code is efficient in calling this API. Already translated sentences are stored in memory for retrieval, so the translate API is used for new translations only, or after a reboot. With 100 Parcels / month it will be practically impossible to surpass the maximum free Google Translate tier of 500.000 characters per month. With heavy usage I am now on 750 characters / day on average, mostly lower. 
+The code is efficient in calling this API. Already translated sentences are stored in memory for retrieval, so the translate API is used for new translations only, or after a reboot. With 100 Parcels / month it will be practically impossible to surpass the maximum free Google Translate tier of 500.000 characters per month. 
 
 <code>autoTranslate</code> should be set to a valid language string (see https://cloud.google.com/translate/docs/languages).  Translation services will not be called if <code>autoTranslate</code> is absent or set to <code>false</code>. 
  
@@ -380,7 +379,7 @@ And Yo, see the Dutch mirror:
 
 
 <em>Advanced users:</em> When you don't like certain automated translations you can put a forced translation JSON file in a MMM-Parcel module subdirectory  <code>manualtrans/xx.json</code>, where "xx" is the selected language ("manualtrans/nl.json" for Dutch). 
-Don't worry, all files in the `manualtrans/` directory are ignored by `git pull` so will not be overwritten by a normal update of the module; except in the case of a clean re-install, of course. The file is a JSON formatted text file (don't make any JSON syntax errors!) of translation pairs of original texts (full sentences) and translated texts. The translation translates complete message entries not word by word. 
+Don't worry, all files in the `manualtrans/` directory are ignored by `git pull` so will not be overwritten by a normal update of the module; except in the case of a clean re-install, of course. The file is a JSON formatted text file (don't make any JSON syntax errors!) of translation pairs of original texts (full sentences) and translated texts. The translation translates complete message lines only. 
 Example:
 ````
 {
@@ -389,7 +388,7 @@ Example:
 }
 ````
 ## Usage with Post NL (postnl-3s)
-THIS PARAGRAPH ONLY FOR POSTNL USERS ON TRACKTRY.COM. Aftership works fine. 
+THIS PARAGRAPH ONLY FOR POSTNL USERS ON TRACKTRY.COM. Aftership works fine as is. 
 
 For Dutch users, the web interface at tracktry.com does not allow for entering the receiver postal code, necessary to get a valid response other than "pending" from postnl-3s (all postnl parcels that start with 3Sxxxxxxxxxxx).   
 
@@ -400,7 +399,8 @@ To start this local MMM-Parcel webinterface you will need to go to the <code>MMM
 You can then use the interface by pointing a browser to http://xxx.yyy.zzz.aaa:3000 where xxx.yyy.zzz.aaa is the local IP adress of the raspberry pi serving the mirror. You can now manage entering the postnl-3s parcels via this web interface. My advice is not to expose this interface to the outside world, for security reasons. 
 
 ## Give your Tracking a title
-THIS PARAGRAPH ONLY FOR TRACKTRY.COM. Aftership works fine. 
+THIS PARAGRAPH ONLY FOR TRACKTRY.COM. Aftership works fine as is. 
+
 The tracktry.com website does not allow you to enter a title for the parcels. 
 
 If this is needed/wanted badly you can also install and use the MMM-Parcel webinterface mentioned above. 
@@ -441,6 +441,7 @@ automatically installed via `npm install`
 
 ## Latest Releases
 - version 3.0.0 Choice of Tracktry or AfterShip (AfterShip  restored free API access Feb 2021. New key required). 
+- version 2.1.x bug fixing (user feedback)
 - version 2.1.0
 ````
 - Refactor of handling code, replaced deprecated "request" with "node-fetch", cleaned code by using async/await
