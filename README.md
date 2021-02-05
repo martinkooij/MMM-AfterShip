@@ -457,6 +457,6 @@ automatically installed via `npm install`
 - version 1.2.0. Functional release (adding translations, autohide and automatic compactness)
 
 ## Known issues
-- The integrators do a reasonably good job in collecting  information from the couriers (with some delays) but are not perfect. Use the mirror presentation as a hint. Often the websites of the couriers give more couriers dependend detailed information that is not accessible via the API.  
+- The integrators do a reasonably good job in collecting  information from the couriers (with some delays) but are not perfect. Use the mirror presentation as a hint. Often the websites of the couriers give more specific information that is not accessible via the API.  
 
 
