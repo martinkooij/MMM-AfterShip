@@ -98,7 +98,7 @@ module: 'MMM-Parcel',
 position: 'top_right',	// This can be any of the regions. Best results in left or right regions.
 header: 'My Parcels',   // This is optional
 config: {
-	useAfterShip: 'Your API KEY goes here' // Your API Key from tracktry.com
+	useAfterShip: 'Your API KEY goes here' // Your API Key from aftership.com
 	}
 },
 ````
