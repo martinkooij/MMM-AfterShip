@@ -28,7 +28,7 @@ function normalize(rawList) {  // normalize for Tracktry Interface
 				var lastLoc = {} ;
 				item.courier_name = null ;
 				item.courier_code = rawItem.carrier_code ;
-				item.tobe_collected = (raw.Item.status === "pickup") ;
+				item.tobe_collected = (rawItem.status === "pickup") ;
 				item.status = statMap.get(rawItem.status)?statMap.get(rawItem.status):"pending" ; // only known statuses are passed all others are mapped to "pending"
 				item.tracking_code = rawItem.tracking_number ;			
 				item.title = rawItem.title ;
