@@ -33,7 +33,7 @@ And in the very compact view (one-liner per shipment):
 
 * OR
 
-* - Get an account on aftership.com (Free account works again, you have to create a new one, the old keys from before 2021 don't work anymore)
+* - Login into your account on aftership.com (legacy accounts works again with a newly generated key, see note further on in the documentation)
 
 * - Get your API Key from https://admin.aftership.com/settings -> API Keys (at right hand top of webpage). 
 
