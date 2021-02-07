@@ -55,7 +55,7 @@ function normalize(rawList) {  // normalize for Aftership Interface
 					if ( rawLoc.country_name && rawLoc.country_name != "" && !d.includes(rawLoc.country_name)) {
 						d += ("," + rawLoc.country_name)
 					}
-					lastLoc.details = d.trim() ;
+					lastLoc.details = d?d.trim():null ;
 					item.substatus = rawLoc.subtag ;  // note that this is moved to toplayer
 				}
 				item.last_loc = (Object.keys(lastLoc).length > 0)?lastLoc:null; ;
