@@ -98,7 +98,7 @@ module: 'MMM-Parcel',
 position: 'top_right',	// This can be any of the regions. Best results in left or right regions.
 header: 'My Parcels',   // This is optional
 config: {
-	useAfterShip: 'Your API KEY goes here' // Your API Key from aftership.com
+	useTrackTry: 'Your API KEY goes here' // Your API Key from tracktry.com
 	}
 },
 ````
@@ -124,7 +124,7 @@ The following properties can be configured:
 			</td>
 		</tr>
 			<td><code>useTrackTry</code> or <code>useAfterShip</td>
-			<td>Your Tracktry and/or AfterShip API access token. Use <em>one</em> of the two. Aftership is recommended (better API), they have restored free API access since February 2021. NOTE: The module will technically work with both keys present, in that case the list of parcels will be combined list of the entered parcels from both companies.<br>
+			<td>Your Tracktry and/or AfterShip API access token. Use <em>one</em> of the two. Aftership is has the better API, they have restored free API access for legacy users. NOTE: The module will technically work with both keys present, in that case the list of parcels will be combined list of the entered parcels from both companies.<br>
 				<br><b>Possible values:</b> <code>string</code>
 				<br><b>Default value:</b> <code>none</code>
 			</td>		
@@ -387,6 +387,16 @@ Example:
 "Processed Through Facility": "Verwerkt in sorteercentrum"
 }
 ````
+
+## A note on AfterShip usage versus tracktry.com
+It's all about the money. 
+
+Aftership has changed their commercial offerings for API usage. In 2020 they restricted API use to the >199$/month plans only, but after user request they have now improved some. You can login on aftership.com => setting => billing and see if you have a legacy plan (it used to be free till 100 parcels/month). Probably you have that plan if you have created a plan before May 2020. You are in luck in that case. Don't change this plan(!). A newly generated API key (at settings => API keys) will in that case work. And it will still be free! The earlier generated keys still have problems at my account, but your mileage may vary. 
+
+If you are a new user tot AfterShip and want API access you're stuck with the <em>9$/month plan</em> or more. Alas, I checked, for new users the free tier does not work anymore! However, if you choose <em>any</em> paid plan you can now generate an API key and use it. This starts from 9$/month. Choosing plans works via aftership.com => login account => settings => billing. 
+
+For the moment <em>tracktry.com</em> is still free. The API is a less informative and accurate, but at least it works with the free tier (although that is not officially advertised at their site). 
+
 ## Usage with Post NL (postnl-3s)
 THIS PARAGRAPH ONLY FOR POSTNL USERS ON TRACKTRY.COM. Aftership works fine as is. 
 
@@ -433,14 +443,14 @@ automatically installed via `npm install`
 
 ## Newest features
 
-- VERSION 3 Handles Tracktry.com *and* AfterShip.com (free API restored  since feb 2021). 
+- VERSION 3 Handles Tracktry.com *and* AfterShip.com (free API restored for legacy plans). 
 - Problem with progress in tracktry solved
 - Problem with hideDelivered solved
 - version 3 is backwards compatbile with version 2. 
 
 
 ## Latest Releases
-- version 3.0.0 Choice of Tracktry or AfterShip (AfterShip  restored free API access Feb 2021. New key required). 
+- version 3.0.0 Choice of Tracktry or AfterShip (AfterShip  restored free API access for legacy free plan users). 
 - version 2.1.x bug fixing (user feedback)
 - version 2.1.0
 ````
