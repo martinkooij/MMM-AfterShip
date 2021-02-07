@@ -39,7 +39,7 @@ function normalize(rawList) {  // normalize for Aftership Interface
 				item.substatus = null ;
 				const rawLoc = (rawItem.checkpoints && rawItem.checkpoints.length != 0)?
 					rawItem.checkpoints[rawItem.checkpoints.length - 1] : null ;
-					console.log('DEBUG aftership normalize', JSON.stringify(rawLoc));
+//					console.log('DEBUG aftership normalize', JSON.stringify(rawLoc));
 				if (rawLoc) {
 					lastLoc.time = rawLoc.checkpoint_time ;
 					if (rawLoc.subtag_message && (rawLoc.subtag_message != "Delivered")) {
@@ -55,7 +55,6 @@ function normalize(rawList) {  // normalize for Aftership Interface
 					if ( rawLoc.country_name && rawLoc.country_name != "" && !d.includes(rawLoc.country_name)) {
 						d += ("," + rawLoc.country_name)
 					}
-					console.log('DEBUG normalize AS, d = ', d);
 					lastLoc.details = d?d.trim():"" ;
 					item.substatus = rawLoc.subtag ;  // note that this is moved to toplayer
 				}
