@@ -91,7 +91,7 @@ module.exports = NodeHelper.create({
 	fetchTracktry: async function(apiKey) {
 		var apiurl = 'https://api.tracktry.com/v1' + '/trackings' ;
 		var apiurlget = apiurl + '/get?page=1&limit=25';
-		console.log('[DEBUG] In Fetch Tracktry Shipments') ;
+//		console.log('[DEBUG] In Fetch Tracktry Shipments') ;
 		try {
 			var body ;
 			if (!this.config.testRead) {
@@ -126,7 +126,7 @@ module.exports = NodeHelper.create({
 				
 	fetchAfterShip: async function(apiKey) {
 		var apiurlget = 'https://api.aftership.com/v4' + '/trackings' ;
-		console.log('[DEBUG] In Fetch AfterShip Shipments') ;
+//		console.log('[DEBUG] In Fetch AfterShip Shipments') ;
 		try {
 			var body ;
 			if (!this.config.testRead) {
