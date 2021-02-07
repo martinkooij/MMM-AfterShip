@@ -31,7 +31,7 @@ function normalize(rawList) {  // normalize for Aftership Interface
 				item.courier_name = null ;
 				item.courier_code = rawItem.slug ;
 				item.tobe_collected = (rawItem.tag === "AvailableForPickup") ;
-				item.status = statMap.get(rawItem.tag)?statMap.get(rawItem.tagtoLowerCase()):"pending" ; // only known statuses are passed all others are mapped to "pending"
+				item.status = statMap.get(rawItem.tag)?statMap.get(rawItem.tag.toLowerCase()):"pending" ; // only known statuses are passed all others are mapped to "pending"
 				item.tracking_code = rawItem.tracking_number ;			
 				item.title = rawItem.title ;
 				item.updated_time = rawItem.updated_at ;
