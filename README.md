@@ -43,7 +43,7 @@ And in the very compact view (one-liner per shipment):
 
 * - AfterShip: press add tracking. It will guide you through entering the parcel. For deleting a tracking you have to open the parcel details and press the "delete"-icon. Only parcels entered via the Aftership website will be shown on the mirror. Parcels entered via the aftership mobile app are not displayed on the mirror. 
 
-* Aftership is advised, more reliable details are provided.  
+* Aftership is advised (if you still have access to an older free account). More reliable details are provided via this API.  
 
 * Tell me what you like, or any issues you have.
 
