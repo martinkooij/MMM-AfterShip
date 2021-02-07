@@ -31,7 +31,7 @@ function normalize(rawList) {  // normalize for Aftership Interface
 				item.courier_name = null ;
 				item.courier_code = rawItem.slug ;
 				item.tobe_collected = (rawItem.tag === "AvailableForPickup") ;
-				item.status = statMap.get(rawItem.tag)?statMap.get(rawItem.tag):"pending" ; // only known statuses are passed all others are mapped to "pending"
+				item.status = statMap.get(rawItem.tag)?statMap.get(rawItem.tagtoLowerCase()):"pending" ; // only known statuses are passed all others are mapped to "pending"
 				item.tracking_code = rawItem.tracking_number ;			
 				item.title = rawItem.title ;
 				item.updated_time = rawItem.updated_at ;
@@ -70,10 +70,10 @@ function normalize(rawList) {  // normalize for Aftership Interface
 function setMap(map) {
 	//defaults
 	const statusList = ["exception","undelivered", "indelivery", "transit", "pending", "notfound", "delivered", "expired"] ;
-	const aftershipList = ["Exception","AttemptFail","OutforDelivery","InTransit", "InfoReceived","NotFound","Delivered","Expired"]
+	const aftershipList = ["exception","attemptfail","outfordelivery","intransit", "inforeceived","notfound","delivered","expired"]
 	statusList.forEach( (v,i) => map.set(aftershipList[i],v) ) ;
 	//extra mappings
-	map.set("AvailableForPickup","delivered") ; // mark pickup as delivered. 
+	map.set("availableforpickup","delivered") ; // mark pickup as delivered. 
 }
 
 function printMap(map) {
