@@ -55,6 +55,7 @@ function normalize(rawList) {  // normalize for Aftership Interface
 					if ( rawLoc.country_name && rawLoc.country_name != "" && !d.includes(rawLoc.country_name)) {
 						d += ("," + rawLoc.country_name)
 					}
+					console.log('DEBUG normalize AS, d = ', d);
 					lastLoc.details = d?d.trim():null ;
 					item.substatus = rawLoc.subtag ;  // note that this is moved to toplayer
 				}
