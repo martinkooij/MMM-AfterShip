@@ -413,9 +413,9 @@ THIS PARAGRAPH ONLY FOR TRACKTRY.COM. Aftership works fine as is.
 
 The tracktry.com website does not allow you to enter a title for the parcels. 
 
-If this is needed/wanted badly you can also install and use the MMM-Parcel webinterface mentioned above. 
+If this is needed/wanted badly you can also install and use the MMM-Parcel webinterface mentioned above. It offers the ability to enter a title. 
 
-Note: the interface does not (yet) allow to modify or enter the title for an already entered item, only new ones can be entered. I found out that you can in that case delete the item and re-enter it from the MMM-Parcel webinterface without it being upcounted against your monthly quota.  
+Update feb 2021: You can also use the "Order-No" field on the tracktry shipments webinterface to give the parcel a title. It accepts any text string. 
 
 ## Dependencies
 * MMM-Parcel
@@ -443,6 +443,7 @@ automatically installed via `npm install`
 
 ## Newest features
 
+- Use Order Id field in https://my.tracktry.com as parcel title. 
 - VERSION 3 Handles Tracktry.com *and* AfterShip.com (free API restored for legacy plans). 
 - Problem with progress in tracktry solved
 - Problem with hideDelivered solved
@@ -450,6 +451,7 @@ automatically installed via `npm install`
 
 
 ## Latest Releases
+- version 3.0.1 only tracktry.com: added order_id field as displayed title. 
 - version 3.0.0 Choice of Tracktry or AfterShip (AfterShip  restored free API access for legacy free plan users). 
 - version 2.1.x bug fixing (user feedback)
 - version 2.1.0
