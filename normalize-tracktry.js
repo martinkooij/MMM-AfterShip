@@ -32,6 +32,7 @@ function normalize(rawList) {  // normalize for Tracktry Interface
 				item.status = statMap.get(rawItem.status)?statMap.get(rawItem.status):"pending" ; // only known statuses are passed all others are mapped to "pending"
 				item.tracking_code = rawItem.tracking_number ;			
 				item.title = rawItem.title?rawItem.title:(rawItem.order_id?rawItem.order_id:"") ; // use title or order_id as title
+				item.title = unescape(escape(item.title);
 				item.updated_time = rawItem.updated_at ;
 				item.expected_deliverytime = null ;
 				item.substatus = null ;
